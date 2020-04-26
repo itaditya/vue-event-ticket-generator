@@ -4,29 +4,37 @@
       <form class="tickets-form">
         <label>
           <span>Enter Event Name</span>
-          <input placeholder="Eg: Vue.js Workshop" />
+          <input v-model="eventName" placeholder="Eg: Vue.js Workshop" />
         </label>
         <label>
           <span>Enter Event Organiser</span>
-          <input placeholder="Eg: Mozilla Bbsr" />
+          <input v-model="eventOrganiser" placeholder="Eg: Mozilla Bbsr" />
         </label>
         <label>
           <span>Enter Event Price</span>
-          <input placeholder="Eg: 20" />
+          <input v-model="eventPrice" placeholder="Eg: 20" />
         </label>
       </form>
       <div>
         <p>Fill the event details in the form. <br />If you like the generated tickets then click on Print button</p>
-        <button>Print Tickets</button>
+        <button v-on:click="generateTickets">Print Tickets</button>
       </div>
     </div>
-    <ul class="tickets-list">
-      <li>
+    <ul class="tickets-list no-print">
+      <li v-for="ticket in tickets" :key="ticket.id">
         <div class="ticket-wrapper">
-          <Ticket />
+          <Ticket :event="event" :ticket="ticket" />
         </div>
       </li>
     </ul>
+    <div v-if="todosLoading">
+      Loading...
+    </div>
+    <ol v-else>
+      <li v-for="todo in todos" :key="todo.id">
+        {{ todo.title }}
+      </li>
+    </ol>
   </div>
 </template>
 
@@ -38,6 +46,56 @@ export default {
   components: {
     Ticket,
   },
+  data() {
+    return {
+      eventName: 'Vue.js Workshop',
+      eventOrganiser: 'Mozilla BBSR',
+      eventPrice: 20,
+      todosLoading: false,
+      tickets: [
+        {
+          id: "ankgeehuge"
+        },
+        {
+          id: "nfghkgeegb"
+        },
+        {
+          id: "sfbhjegebui"
+        },
+        {
+          id: "wihurgbhgef"
+        }
+      ],
+      todos: [],
+    }
+  },
+  computed: {
+    calculatedPrice() {
+      return this.eventPrice * 3 + 100;
+    },
+    event() {
+      return {
+        name: this.eventName,
+        organiser: this.eventOrganiser,
+        price: this.eventPrice,
+      };
+    }
+  },
+  mounted() {
+    console.log('geige');
+    this.todosLoading = true;
+    fetch('https://jsonplaceholder.typicode.com/users/1/todos')
+      .then(response => response.json())
+      .then(json => {
+        this.todos = json;
+        this.todosLoading = false;
+      })
+  },
+  methods: {
+    generateTickets() {
+      window.print();
+    }
+  }
 };
 </script>
 

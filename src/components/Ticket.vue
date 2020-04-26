@@ -2,26 +2,35 @@
   <div class="ticket">
     <div class="ticket-column-1">
       <div>
-        <h6 class="ticket-heading">Event Name</h6>
-        <p class="ticket-info">Event Organiser</p>
+        <h6 class="ticket-heading">{{ event.name }}</h6>
+        <p class="ticket-info">{{ event.organiser }}</p>
       </div>
       <div>
-        <span class="ticket-price">$20</span>
+        <span class="ticket-price">${{ event.price }}</span>
         <span>&nbsp;/-</span>
       </div>
     </div>
     <div class="ticket-column-2">
       <div class="ticket-qr">
-        QR Code
+        <qrcode-vue :value="ticket.id" size="100" level="H"></qrcode-vue>
       </div>
-      <p class="ticket-code">ID: 8y37343834</p>
+      <p class="ticket-code">ID: {{ ticket.id }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import QrcodeVue from "qrcode.vue";
+
 export default {
   name: "Ticket",
+  components: {
+    QrcodeVue,
+  },
+  props: {
+    event: Object,
+    ticket: Object,
+  },
 };
 </script>
 
