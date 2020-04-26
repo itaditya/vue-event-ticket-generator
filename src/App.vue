@@ -4,26 +4,28 @@
       <form class="tickets-form">
         <label>
           <span>Enter Event Name</span>
-          <input placeholder="Eg: Vue.js Workshop" />
+          <input v-model="eventName" placeholder="Eg: Vue.js Workshop">
         </label>
         <label>
           <span>Enter Event Organiser</span>
-          <input placeholder="Eg: Mozilla Bbsr" />
+          <input v-model="eventOrganizer" placeholder="Eg: Mozilla Bbsr">
         </label>
         <label>
           <span>Enter Event Price</span>
-          <input placeholder="Eg: 20" />
+          <input v-model="eventPrice" placeholder="Eg: 20">
         </label>
       </form>
       <div>
-        <p>Fill the event details in the form. <br />If you like the generated tickets then click on Print button</p>
-        <button>Print Tickets</button>
+        <p>Fill the event details in the form.
+          <br>If you like the generated tickets then click on Print button
+        </p>
+        <button v-on:click="generateTickets">Print Tickets</button>
       </div>
     </div>
     <ul class="tickets-list">
-      <li>
+      <li v-for="ticket in tickets" :key="ticket.id">
         <div class="ticket-wrapper">
-          <Ticket />
+          <Ticket :event="event" :ticket="ticket"/>
         </div>
       </li>
     </ul>
@@ -31,13 +33,50 @@
 </template>
 
 <script>
-import Ticket from './components/Ticket';
+import Ticket from "./components/Ticket";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Ticket,
+    Ticket
   },
+  data() {
+    return {
+      eventName: "Vue.js Workshop",
+      eventOrganizer: "Mozilla BBSR",
+      eventPrice: "20",
+      tickets: [
+        {
+          id: "ankgeehuge"
+        },
+        {
+          id: "nfghkgeegb"
+        },
+        {
+          id: "sfbhjegebui"
+        },
+        {
+          id: "wihurgbhgef"
+        }
+      ]
+    };
+  },
+  computed: {
+    event() {
+      const event = {
+        name: this.eventName,
+        organiser: this.eventOrganizer,
+        price: this.eventPrice
+      };
+
+      return event;
+    }
+  },
+  methods: {
+    generateTickets() {
+      window.print();
+    }
+  }
 };
 </script>
 
@@ -60,7 +99,7 @@ h6 {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -85,7 +124,7 @@ h6 {
 }
 
 .ticket-wrapper {
-  width: 350px;
+  width: 340px;
   padding: 5px;
 }
 
